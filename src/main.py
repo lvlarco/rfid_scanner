@@ -10,8 +10,8 @@ cols = 16
 rows = 2
 wait_time = 3
 
-rfid_in = 15
-GPIO.setup(rfid_in, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# rfid_in = 15
+# GPIO.setup(rfid_in, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 baudrate = 9600
 port = Serial('/dev/ttyAMA0', baudrate, timeout=0.2)
 
@@ -60,7 +60,7 @@ def update_lcd_screen(cat):
     cat_location = directional_signal()
     scan_time = last_rfid_scan()
     message01 = "{} is {}SIDE".format(cat, cat_location.upper())
-    message11 = "He walked {} at {}".format(cat_location.lower(), scan_time)
+    message11 = "{}".format(cat_location.lower(), str(scan_time))
     pos01 = center_cursor(message01, cols)
     pos11 = center_cursor(message11, cols)
     lcd.cursor_pos = (0, pos01)
@@ -70,10 +70,11 @@ def update_lcd_screen(cat):
 
 
 while True:
+    print("Waiting to scan")
     rfid_tag = port.readline()
     rfid_tag = ":".join("{:02x}".format(ord(c)) for c in rfid_tag)
     if len(rfid_tag) > 1:
         cat_name = get_cat_name(rfid_tag)
-        print(cat_name)
+        print("Cat scanned: {}".format(cat_name))
         update_lcd_screen(cat_name)
-    time.sleep(1)
+    time.sleep(2)
