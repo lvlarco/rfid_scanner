@@ -37,7 +37,10 @@ def reset_location():
 
 
 def get_cat_name(rfid_signal):
-    return list(cat_dict.keys())[list(cat_dict.values()).index(rfid_signal)]
+    try:
+        return list(cat_dict.keys())[list(cat_dict.values()).index(rfid_signal)]
+    except:
+        return "Error"
 
 
 def last_rfid_scan():
@@ -69,6 +72,8 @@ def update_lcd_screen(cat):
 while True:
     rfid_tag = port.readline()
     rfid_tag = ":".join("{:02x}".format(ord(c)) for c in rfid_tag)
-    cat_name = get_cat_name(rfid_tag)
-    update_lcd_screen(cat_name)
+    if len(rfid_tag) > 1:
+        cat_name = get_cat_name(rfid_tag)
+        print(cat_name)
+        update_lcd_screen(cat_name)
     time.sleep(1)
