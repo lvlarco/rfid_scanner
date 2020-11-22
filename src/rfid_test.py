@@ -1,8 +1,8 @@
 from serial import Serial
 import time
 
-brate = 9600
-port = Serial('/dev/ttyAMA0', 9600, timeout=0.2)
+baudrate = 9600
+port = Serial('/dev/ttyAMA0', baudrate, timeout=0.2)
 
 while True:
     print("Waiting")
